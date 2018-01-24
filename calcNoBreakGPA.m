@@ -3,9 +3,10 @@ function [gpaNoBreak] = calcNoBreakGPA(records)
     n = 0;
     for k = 1:length(records) 
         leaveParams = locateBreaks(records{k});
-        if(isempty(leaveParams))
+        if(size(leaveParams,1) == 1 ) % no need: || (size(leaveParams,1) == 2 && leaveParams(1,1) == 0)
             n = n + 1;
-            gpaNoBreak(n) = mean(avgGradesPerSemester(records{k}));
+            grades = avgGradesPerSemester(records{k});
+            gpaNoBreak(n) = mean(grades(grades~=0));
         end
     end
 end

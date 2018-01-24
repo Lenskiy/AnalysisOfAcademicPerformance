@@ -1,6 +1,8 @@
 function [gpaBeforeBreak, gpaAfterBreak] = calcBeforeAndAfterTheBreakGPA(records, minBreakLength, minNumberOfSemestersAfterTheBreak)
     % find the first break that satisfies the conditions    
     n = 0;
+    gpaBeforeBreak =[];
+    gpaAfterBreak = [];
     for k = 1:length(records) 
         leaveParams = locateBreaks(records{k});
         gpas{k} = gpaPerInterval(leaveParams, records{k});
@@ -8,8 +10,8 @@ function [gpaBeforeBreak, gpaAfterBreak] = calcBeforeAndAfterTheBreakGPA(records
             continue;
         end
 
-        if(leaveParams(:,2) >  minBreakLength)        
-           ind = find(leaveParams(:,2) > minBreakLength);
+        if(max(leaveParams(:,2) >=  minBreakLength))        
+           ind = find(leaveParams(:,2) >= minBreakLength);
            if(gpas{k}(ind(1) + 1, 1) > minNumberOfSemestersAfterTheBreak)
                n = n + 1;
                gpaBeforeBreak(n) = gpas{k}(ind(1), 2);

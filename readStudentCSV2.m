@@ -19,7 +19,7 @@ function table = readStudentCSV2(path, elementsPerRow)
         comaSeparated =  split(rows{k},',');
         for l = 1 :elementsPerRow
             if(l <= length(comaSeparated))
-                table(k, l) = comaSeparated(l);
+                table(k, l) = string(cell2mat(comaSeparated(l)));
             else
                 table(k, l) = '';
             end

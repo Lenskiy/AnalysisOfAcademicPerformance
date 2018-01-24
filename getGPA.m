@@ -7,6 +7,9 @@ function [GPAs, totalSemesters]= getGPA(courses, semesters)
     totalSemesters = (lastYear - firstYear)/0.5;
     for k = 1:length(semesters)
         grades = getGradesPerSemester(courses, semesters(k));
+        if(isempty(grades))
+            grades = 0;
+        end
         GPAs(k) = mean(grades);
     end
 end

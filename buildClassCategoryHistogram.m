@@ -1,5 +1,4 @@
-function cathist = buildClassCategoryHistogram(records)
-    types = {'100', '101', '102', '103', '130', '131', '132', '133', '134', 'ARB', 'ARD', 'SHA', 'SHB', 'INS', 'ITA', 'ITC', 'ITE', 'ITT', 'ITP', 'IFA', 'IFB', 'IFC', 'IFD', 'IFE', 'IMA', 'IMB', 'INA', 'INI',  'INM', 'IDA', 'IMC', 'IME', 'EDU',  'BSM', 'TAM', 'LAN', 'CCT', 'CON', 'HRD', 'MSA', 'MCA', 'MTB', 'MTD', 'MTE', 'MTF','MEB', 'MEC', 'MEF', 'CPA', 'CPC', 'CPS'};
+function cathist = buildClassCategoryHistogram(records, types)
     clear cathist;
     cathist = zeros(size(records,2), size(types, 2));
     for j = 1:size(records,2)

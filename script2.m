@@ -44,8 +44,11 @@ statisticalAnalysis(gpaBeforeBreak, gpaAfterBreak, 'off');
 visualizeGPAHistogramBeforeAndAfter(gpaBeforeBreak, gpaAfterBreak, 'Electronics: GPA before and after', 'before', 'after');
 visualizeGPAHistogramBeforeAndAfter(gpaNoBreak, (gpaBeforeBreak + gpaAfterBreak) / 2,'Electronics: Effect of a break', 'no break', 'break');
 
+% Class categories 
+types = {'100', '101', '102', '103', '130', '131', '132', '133', '134', 'ARB', 'ARD', 'SHA', 'SHB', 'INS', 'ITA', 'ITC', 'ITE', 'ITT', 'ITP', 'IFA', 'IFB', 'IFC', 'IFD', 'IFE', 'IMA', 'IMB', 'INA', 'INI',  'INM', 'IDA', 'IMC', 'IME', 'EDU',  'BSM', 'TAM', 'LAN', 'CCT', 'CON', 'HRD', 'MSA', 'MCA', 'MTB', 'MTD', 'MTE', 'MTF','MEB', 'MEC', 'MEF', 'CPA', 'CPC', 'CPS'};
+
 %build a histogram of classes categories
-cathist = buildClassCategoryHistogram(allRecords);
+cathist = buildClassCategoryHistogram(allRecords, types);
 
 % remove categories that appear rarely
 catInds = find(sum(cathist) >= 10);
@@ -56,20 +59,22 @@ for k = 1:length(catInds)
     stypes{k} = types{catInds(k)};
 end
 
+tempRecordings = recordsDICE;
+
 % claculte overall GPA for each student 
-gpaOveral = calcOverAllGPA(allRecords);
+gpaOveral = calcOverAllGPA(tempRecordings);
 % Normalize GPA to [0, 1] to be able to use it as a color
 gpaOveralNorm = (gpaOveral - min(gpaOveral)) / (max(gpaOveral) - min(gpaOveral));
 
 
 figure, hold on, grid on;
-for k = 1:size(allRecords,2)
+for k = 1:size(tempRecordings,2)
    plot3(k * ones(1, size(rcathist(k, :),2)), 1:size(rcathist(k, :),2), rcathist(k, :), 'color', [gpaOveralNorm(k), 1 - gpaOveralNorm(k), 0], 'marker', '.')
 end
 xlabel('students');
 ylabel('categories');
 zlabel('times');
-axis([1, size(allRecords,2), 1, length(stypes), 0, max(max(rcathist))]);
+axis([1, size(tempRecordings,2), 1, length(stypes), 0, max(max(rcathist))]);
 ax = gca;
 ax.YTick = [1:length(stypes)];
 ax.YTickLabel = stypes;
@@ -81,7 +86,7 @@ set(gca, 'YTickLabelRotation', 45)
 reduced = rcathist * pc(:,1:3);
 
 figure, hold on, grid on;
-for k = 1:size(allRecords,2)
+for k = 1:size(tempRecordings,2)
     plot3(reduced(k,1), reduced(k,2), reduced(k,3), 'color', [gpaOveralNorm(k), 1 - gpaOveralNorm(k), 0], 'marker', '.');
 end
 xlabel('component 1');

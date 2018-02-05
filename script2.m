@@ -59,6 +59,7 @@ for k = 1:length(catInds)
     stypes{k} = types{catInds(k)};
 end
 
+% Select what records you want to use
 tempRecordings = recordsDICE;
 
 % claculte overall GPA for each student 

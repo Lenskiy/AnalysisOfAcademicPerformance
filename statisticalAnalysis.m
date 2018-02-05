@@ -36,13 +36,13 @@ if g1normal==1 && g2normal == 1
         resp = 1;
     end
 else
-    [P,ANOVATAB,STATS] = anova1(data,[],  dispOpt); 
+    [P,ANOVATAB,STATS] = kruskalwallis(data,[],  dispOpt); 
     if(P<0.05) 
         alpha = num2str(P);
         df1 = num2str(cell2mat(ANOVATAB(2,3)));
         df2 = num2str(cell2mat(ANOVATAB(3,3)));
         F = num2str(cell2mat(ANOVATAB(2,5)));
-        disp(['[ANOVA]: distributions are different with F(alpha,d1,d2) = F(',alpha,',',df1,',',df2,')=',F]);
+        disp(['[kruskalwallis]: distributions are different with F(alpha,d1,d2) = F(',alpha,',',df1,',',df2,')=',F]);
         resp = 1;
     end
 end

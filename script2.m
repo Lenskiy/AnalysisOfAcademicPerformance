@@ -47,8 +47,11 @@ visualizeGPAHistogramBeforeAndAfter(gpaNoBreak, (gpaBeforeBreak + gpaAfterBreak)
 % Class categories 
 types = {'100', '101', '102', '103', '130', '131', '132', '133', '134', 'ARB', 'ARD', 'SHA', 'SHB', 'INS', 'ITA', 'ITC', 'ITE', 'ITT', 'ITP', 'IFA', 'IFB', 'IFC', 'IFD', 'IFE', 'IMA', 'IMB', 'INA', 'INI',  'INM', 'IDA', 'IMC', 'IME', 'EDU',  'BSM', 'TAM', 'LAN', 'CCT', 'CON', 'HRD', 'MSA', 'MCA', 'MTB', 'MTD', 'MTE', 'MTF','MEB', 'MEC', 'MEF', 'CPA', 'CPC', 'CPS'};
 
+% Select what records you want to use
+tempRecordings = recordsElectronics; %recordsDICE, recordsElectrical, recordsElectronics
+
 %build a histogram of classes categories
-cathist = buildClassCategoryHistogram(allRecords, types);
+cathist = buildClassCategoryHistogram(tempRecordings, types);
 
 % remove categories that appear rarely
 catInds = find(sum(cathist) >= 10);
@@ -59,26 +62,23 @@ for k = 1:length(catInds)
     stypes{k} = types{catInds(k)};
 end
 
-% Select what records you want to use
-tempRecordings = recordsDICE;
-
 % claculte overall GPA for each student 
 gpaOveral = calcOverAllGPA(tempRecordings);
 % Normalize GPA to [0, 1] to be able to use it as a color
 gpaOveralNorm = (gpaOveral - min(gpaOveral)) / (max(gpaOveral) - min(gpaOveral));
-
+[grades, gradeSortedInds] = sort(gpaOveralNorm);
 
 figure, hold on, grid on;
 for k = 1:size(tempRecordings,2)
-   plot3(k * ones(1, size(rcathist(k, :),2)), 1:size(rcathist(k, :),2), rcathist(k, :), 'color', [gpaOveralNorm(k), 1 - gpaOveralNorm(k), 0], 'marker', '.')
+   stem3(k * ones(1, size(rcathist(gradeSortedInds(k), :),2)), 1:size(rcathist(gradeSortedInds(k), :),2), rcathist(gradeSortedInds(k), :), 'color', [gpaOveralNorm(gradeSortedInds(k)), 1 - gpaOveralNorm(gradeSortedInds(k)), 0], 'marker', '.')
 end
 xlabel('students');
 ylabel('categories');
 zlabel('times');
-axis([1, size(tempRecordings,2), 1, length(stypes), 0, max(max(rcathist))]);
+axis([1, size(tempRecordings,2), 1, length(catInds), 0, max(max(rcathist))]);
 ax = gca;
-ax.YTick = [1:length(stypes)];
-ax.YTickLabel = stypes;
+ax.YTick = [1:length(catInds)];
+ax.YTickLabel = types(catInds);
 set(gca, 'YTickLabelRotation', 45)
     
 % Find principal components
@@ -88,7 +88,7 @@ reduced = rcathist * pc(:,1:3);
 
 figure, hold on, grid on;
 for k = 1:size(tempRecordings,2)
-    plot3(reduced(k,1), reduced(k,2), reduced(k,3), 'color', [gpaOveralNorm(k), 1 - gpaOveralNorm(k), 0], 'marker', '.');
+    plot3(reduced(gradeSortedInds(k),1), reduced(gradeSortedInds(k),2), reduced(gradeSortedInds(k),3), 'color', [gpaOveralNorm(gradeSortedInds(k)), 1 - gpaOveralNorm(gradeSortedInds(k)), 0], 'marker', '.', 'markersize', 5);
 end
 xlabel('component 1');
 ylabel('component 2');

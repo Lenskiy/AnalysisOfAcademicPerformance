@@ -5,13 +5,13 @@ allRecords = [recordsDICE recordsElectrical recordsElectronics];
 minBreakLength = 4;
 minNumberOfSemestersAfterTheBreak = 2;
 minTotalNumberOfSemesters = 8;
-breakSemester = 2;
+breakSemester = 5;
 %For all students
 % [gpaBeforeBreak, gpaAfterBreak] = calcBeforeAndAfterTheBreakGPA(allRecords, minBreakLength, minNumberOfSemestersAfterTheBreak);
 [gpaBeforeBreak, gpaAfterBreak, studentsIndWithBreaks] = calcBeforeAndAfterTheBreakOneSemesterGPA(allRecords, minBreakLength, minNumberOfSemestersAfterTheBreak, breakSemester);
-finalGPANoBreak = calcFinalGPA(allRecords, studentsIndWithBreaks); % final GPA of students with long breaks
+finalGPAWithBreak = calcFinalGPA(allRecords, studentsIndWithBreaks); % final GPA of students with long breaks
 
-[finalGPABreak, studentsIndWithNoBreaks] = calcNoBreakGPA(allRecords, minTotalNumberOfSemesters);  % final GPA of students with no breaks and minimum studied semesters
+[finalGPANoBreak, studentsIndWithNoBreaks] = calcNoBreakGPA(allRecords, minTotalNumberOfSemesters);  % final GPA of students with no breaks and minimum studied semesters
 [gpaBeforeSemester, gpaAtSemester] = gpaBeforeAndAtSemester(allRecords, breakSemester, studentsIndWithNoBreaks);
 
 
@@ -25,8 +25,12 @@ visualizeGPAHistogramBeforeAndAfter(gpaBeforeSemester, gpaAtSemester,['All: GPA 
 statisticalAnalysis(gpaBeforeVirtualBreak, gpaBeforeVirtualBreak, 'off');
 
 
-visualizeGPAHistogramBeforeAndAfter(finalGPANoBreak, finalGPABreak,'All: Effect of a break', 'no break', 'break');
+[gpaBeforeBreak, gpaAfterBreak, studentsIndWithBreaks] = calcBeforeAndAfterTheBreakOneSemesterGPA(allRecords, minBreakLength, minNumberOfSemestersAfterTheBreak, [2,3,4,5]);
+finalGPAWithBreak = calcFinalGPA(allRecords, studentsIndWithBreaks); % final GPA of students with long breaks
 
+visualizeGPAHistogramBeforeAndAfter(finalGPANoBreak, finalGPAWithBreak,'All: Effect of a break', 'no break', 'break');
+% test statisticaly whether distributions of the final GPAs with breaks and
+% with no breaks are the same or not.
 
 
 

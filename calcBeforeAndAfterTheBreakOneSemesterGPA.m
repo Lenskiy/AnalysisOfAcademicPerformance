@@ -1,4 +1,4 @@
-function [gpaBeforeBreak, gpaAfterBreak, studentsInd] = calcBeforeAndAfterTheBreakOneSemesterGPA(records, minBreakLength, minNumberOfSemestersAfterTheBreak, semesterBreak)
+function [gpaBeforeBreak, gpaAfterBreak, studentsInd] = calcBeforeAndAfterTheBreakOneSemesterGPA(records, breakLength, minNumberOfSemestersAfterTheBreak, semesterBreak)
     % find the first break that satisfies the conditions    
     n = 0;
     gpaBeforeBreak =[];
@@ -21,7 +21,7 @@ function [gpaBeforeBreak, gpaAfterBreak, studentsInd] = calcBeforeAndAfterTheBre
         end
         
         [theLongestBreak, theLongestBreakInd] = max(leaveParams(:,2));
-        if(theLongestBreak >=  minBreakLength)        
+        if(sum(theLongestBreak == breakLength))        
            if(gpasPerStudens(theLongestBreakInd, 1) >= minNumberOfSemestersAfterTheBreak)
                if(sum(leaveParams(theLongestBreakInd, 1) == semesterBreak))
                     n = n + 1;

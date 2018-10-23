@@ -1,14 +1,14 @@
 [recordsDICE, tablesDICE] = readRecords('./Data/DICE/');
 [recordsElectrical, tablesElectrical] = readRecords('./Data/Electrical/');
 [recordsElectronics, tablesElectronics] = readRecords('./Data/Electronics/');
-allRecords = [recordsDICE recordsElectrical recordsElectronics];
-minBreakLength = 4;
+allRecords = [recordsDICE recordsElectronics];
+breakLength = [4:10];
 minNumberOfSemestersAfterTheBreak = 2;
 minTotalNumberOfSemesters = 8;
-breakSemester = 5;
+breakSemester = 3;
 %For all students
 % [gpaBeforeBreak, gpaAfterBreak] = calcBeforeAndAfterTheBreakGPA(allRecords, minBreakLength, minNumberOfSemestersAfterTheBreak);
-[gpaBeforeBreak, gpaAfterBreak, studentsIndWithBreaks] = calcBeforeAndAfterTheBreakOneSemesterGPA(allRecords, minBreakLength, minNumberOfSemestersAfterTheBreak, breakSemester);
+[gpaBeforeBreak, gpaAfterBreak, studentsIndWithBreaks] = calcBeforeAndAfterTheBreakOneSemesterGPA(allRecords, breakLength, minNumberOfSemestersAfterTheBreak, breakSemester);
 finalGPAWithBreak = calcFinalGPA(allRecords, studentsIndWithBreaks); % final GPA of students with long breaks
 
 [finalGPANoBreak, studentsIndWithNoBreaks] = calcNoBreakGPA(allRecords, minTotalNumberOfSemesters);  % final GPA of students with no breaks and minimum studied semesters
@@ -19,16 +19,18 @@ finalGPAWithBreak = calcFinalGPA(allRecords, studentsIndWithBreaks); % final GPA
 % figure, hold on;
 % plot(gpaBeforeBreak)
 % plot(gpaAfterBreak)
-visualizeGPAPDFBeforeAndAfter(gpaBeforeBreak, gpaAfterBreak, ['All: GPA before and after long-term break at N = ', num2str(breakSemester) ,' semester'], 'before', 'after');
+visualizeGPAPDFBeforeAndAfter(gpaBeforeBreak, gpaAfterBreak, '', 'before', 'after');
 statisticalAnalysis(gpaBeforeBreak, gpaAfterBreak, 'off');
-visualizeGPAPDFBeforeAndAfter(gpaBeforeSemester, gpaAtSemester,['All: GPA before and at N = ', num2str(breakSemester) ,' semester'], 'before', 'at');
-statisticalAnalysis(gpaBeforeVirtualBreak, gpaBeforeVirtualBreak, 'off');
+visualizeGPAPDFBeforeAndAfter(gpaBeforeSemester, gpaAtSemester,'', 'before', 'after');
+statisticalAnalysis(gpaBeforeSemester, gpaAtSemester, 'off');
 
 
-[gpaBeforeBreak, gpaAfterBreak, studentsIndWithBreaks] = calcBeforeAndAfterTheBreakOneSemesterGPA(allRecords, minBreakLength, minNumberOfSemestersAfterTheBreak, [2,3,4,5]);
+
+
+[gpaBeforeBreak, gpaAfterBreak, studentsIndWithBreaks] = calcBeforeAndAfterTheBreakOneSemesterGPA(allRecords, minBreakLength, minNumberOfSemestersAfterTheBreak, breakSemester);
 finalGPAWithBreak = calcFinalGPA(allRecords, studentsIndWithBreaks); % final GPA of students with long breaks
 
-visualizeGPAPDFBeforeAndAfter(finalGPANoBreak, finalGPAWithBreak,'All: Effect of a break', 'no break', 'break');
+visualizeGPAPDFBeforeAndAfter(finalGPANoBreak, finalGPAWithBreak,'', 'without break', 'with break');
 % test statisticaly whether distributions of the final GPAs with breaks and
 % with no breaks are the same or not.
 

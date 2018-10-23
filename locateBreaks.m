@@ -16,5 +16,9 @@ function [breakSemesters, numCompletedSemesters] = locateBreaks(record)
             end      
         end
         
+        if(breakSemesters(end, 2) == 0)
+            breakSemesters(end, :) = [];
+        end
+        
         numCompletedSemesters = sum(avgGradeEvolution ~= 0);
 end

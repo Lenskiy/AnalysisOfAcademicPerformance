@@ -2,17 +2,19 @@
 [recordsElectrical, tablesElectrical] = readRecords('./Data/Electrical/');
 [recordsElectronics, tablesElectronics] = readRecords('./Data/Electronics/');
 allRecords = [recordsDICE recordsElectronics];
-breakLength = [4:10];
-minNumberOfSemestersAfterTheBreak = 2;
+breakLength = [1];
+%minNumberOfSemestersAfterTheBreak = 2; %% does not work anymore
 minTotalNumberOfSemesters = 8;
-breakSemester = 3;
+breakSemester = [1:20];
+
 %For all students
 % [gpaBeforeBreak, gpaAfterBreak] = calcBeforeAndAfterTheBreakGPA(allRecords, minBreakLength, minNumberOfSemestersAfterTheBreak);
-[gpaBeforeBreak, gpaAfterBreak, studentsIndWithBreaks] = calcBeforeAndAfterTheBreakOneSemesterGPA(allRecords, breakLength, minNumberOfSemestersAfterTheBreak, breakSemester);
+[gpaBeforeBreak, gpaAfterBreak, studentsIndWithBreaks] = calcBeforeAndAfterTheBreakOneSemesterGPA(allRecords, breakLength, breakSemester); % minNumberOfSemestersAfterTheBreak
 finalGPAWithBreak = calcFinalGPA(allRecords, studentsIndWithBreaks); % final GPA of students with long breaks
 
+
 [finalGPANoBreak, studentsIndWithNoBreaks] = calcNoBreakGPA(allRecords, minTotalNumberOfSemesters);  % final GPA of students with no breaks and minimum studied semesters
-[gpaBeforeSemester, gpaAtSemester] = gpaBeforeAndAtSemester(allRecords, breakSemester, studentsIndWithNoBreaks);
+%[gpaBeforeSemester, gpaAtSemester] = gpaBeforeAndAtSemester(allRecords, breakSemester, studentsIndWithNoBreaks);
 
 
 % [gpaNoBreak] = calcNoBreakGPA(allRecords);
@@ -21,8 +23,8 @@ finalGPAWithBreak = calcFinalGPA(allRecords, studentsIndWithBreaks); % final GPA
 % plot(gpaAfterBreak)
 visualizeGPAPDFBeforeAndAfter(gpaBeforeBreak, gpaAfterBreak, '', 'before', 'after');
 statisticalAnalysis(gpaBeforeBreak, gpaAfterBreak, 'off');
-visualizeGPAPDFBeforeAndAfter(gpaBeforeSemester, gpaAtSemester,'', 'before', 'after');
-statisticalAnalysis(gpaBeforeSemester, gpaAtSemester, 'off');
+% visualizeGPAPDFBeforeAndAfter(gpaBeforeSemester, gpaAtSemester,'', 'before', 'after');
+% statisticalAnalysis(gpaBeforeSemester, gpaAtSemester, 'off');
 
 
 

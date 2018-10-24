@@ -9,7 +9,7 @@ breakSemester = [1:20];
 
 %For all students
 % [gpaBeforeBreak, gpaAfterBreak] = calcBeforeAndAfterTheBreakGPA(allRecords, minBreakLength, minNumberOfSemestersAfterTheBreak);
-[gpaBeforeBreak, gpaAfterBreak, studentsIndWithBreaks] = calcBeforeAndAfterTheBreakOneSemesterGPA(allRecords, breakLength, breakSemester); % minNumberOfSemestersAfterTheBreak
+[gpaBeforeBreak, gpaAfterBreak, studentsIndWithBreaks] = calcBeforeAndAfterTheBreakOneSemesterGPA(allRecords, breakLength, breakSemester, minTotalNumberOfSemesters); % minNumberOfSemestersAfterTheBreak
 finalGPAWithBreak = calcFinalGPA(allRecords, studentsIndWithBreaks); % final GPA of students with long breaks
 
 

@@ -1,4 +1,4 @@
-function [gpaBeforeBreak, gpaAfterBreak, studentsInd] = calcBeforeAndAfterTheBreakOneSemesterGPA(records, breakLength, semesterBreak) % minNumberOfSemestersAfterTheBreak
+function [gpaBeforeBreak, gpaAfterBreak, studentsInd] = calcBeforeAndAfterTheBreakOneSemesterGPA(records, breakLength, semesterBreak, minTotalNumberOfSemesters) % minNumberOfSemestersAfterTheBreak
     % find the first break that satisfies the conditions    
     n = 0;
     gpaBeforeBreak =[];
@@ -6,11 +6,13 @@ function [gpaBeforeBreak, gpaAfterBreak, studentsInd] = calcBeforeAndAfterTheBre
     studentsInd = [];
     for k = 1:length(records) 
         clear leaveParams;
+        avgGrade = avgGradesPerSemester(records{k});
+        if(sum(avgGrade ~= 0) < minTotalNumberOfSemesters) 
+            continue;       % is a student studied less than a threshold 
+        end
         leaveParams = locateBreaks(records{k}); % break semester, break length
         for l = 1:size(leaveParams, 1)
-            if(~isempty(leaveParams))
-                avgGrade = avgGradesPerSemester(records{k});
-                                      
+            if(~isempty(leaveParams))                                   
                 leaveParams(l, 3:4) = [ avgGrade(leaveParams(l, 1) - 1),...                             % GPA before the break
                                         avgGrade(leaveParams(l, 1) + leaveParams(l, 2))];               % GPA after the break
             end
